@@ -1,4 +1,5 @@
 import {makeStyles, Theme} from "@material-ui/core/styles";
+import Paper from "../assets/paper.png";
 
 type StyleProps = {
     disabled: boolean
@@ -6,31 +7,46 @@ type StyleProps = {
 
 export const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     header: {
-        fontSize: 42
+        fontSize: 72,
+        color: "#1a1a95",
+        textAlign: "center"
     },
-    container: {
+    formWrapper: {
         width: "50%",
-        minHeight: 450,
-        backgroundColor: "#e9e9e9",
         borderRadius: 5,
-        padding: 25,
+        padding: 15,
+        marginBottom: 25,
         boxSizing: "border-box"
+    },
+    paperWrapper: {
+        width: "60%",
+        minHeight: 400,
+        padding: "0px 20px 10px 170px",
+        boxSizing: "border-box",
+        borderRadius: 5,
+        backgroundImage: `url(${Paper})`,
+        backgroundPosition: 'initial',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'repeat-y',
     },
     inputWrapper: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 20,
+        marginTop: 20,
         "& input": {
-            width: 200,
+            width: 380,
+            border: "none",
             borderRadius: 5,
-            border: "1px solid lightgray",
-            fontSize: 20,
+            height: 30,
+            fontSize: 24,
+            padding: 3,
+            backgroundColor: "#fff",
             "&:focus": {outline: "none"}
         }
     },
     submitBtn: {
-        marginLeft: 20,
+        margin: "0px 20px",
         width: 30,
         height: 30,
         display: "flex",

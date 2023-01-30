@@ -1,22 +1,23 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles, Theme} from "@material-ui/core/styles";
 import {hover} from "@testing-library/user-event/dist/hover";
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles<Theme, { completed: boolean }>({
     itemWrapper: {
         width: "100%",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        border: "1px solid lightgrey",
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
-        boxSizing: "border-box"
+        padding: 7,
+        boxSizing: "border-box",
+        height: 56
     },
     titleWrapper: {
         display: "flex",
         alignItems: "center",
-        fontSize: 22
+        fontSize: 32
+    },
+    crossed: {
+        textDecoration: "line-through"
     },
     button: {
         outline: "none",

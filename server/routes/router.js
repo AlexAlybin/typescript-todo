@@ -1,13 +1,14 @@
 const router = require("express").Router()
 const {getTodos, addTodo, updateTodo, deleteTodo} = require("../services/services")
+const delay = require("../middleware");
 
 
-router.get("/", getTodos);
+router.get("/", delay, getTodos);
 
-router.post("/", addTodo);
+router.post("/", delay, addTodo);
 
 router.put("/:id", updateTodo);
 
-router.delete("/:id", deleteTodo);
+router.delete("/:id", delay, deleteTodo);
 
 module.exports = router;

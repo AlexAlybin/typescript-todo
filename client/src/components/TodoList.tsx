@@ -16,13 +16,11 @@ export const TodoList: FC<any> = () => {
     const styles = useStyles({disabled: !entry})
 
     useEffect(() => {
-        const getAllTodos = () => {
+        const getAllTodos = async () => {
             try {
-                setTimeout(async () => {
-                    const {data} = await getTodos()
-                    setTodos(data)
-                    setFetching(false)
-                }, 1000)
+                const {data} = await getTodos()
+                setTodos(data)
+                setFetching(false)
             } catch (err) {
                 console.error("Error fetching data", err)
                 setFetching(false)
@@ -35,17 +33,15 @@ export const TodoList: FC<any> = () => {
         setEntry(e.target.value)
     }
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (entry) {
             try {
                 setLoading(true)
-                setTimeout(async () => {
-                    const {data: newTodo} = await addTodo({title: entry})
-                    setTodos([...todos, newTodo])
-                    setEntry("")
-                    setLoading(false)
-                }, 1000)
+                const {data: newTodo} = await addTodo({title: entry})
+                setTodos([...todos, newTodo])
+                setEntry("")
+                setLoading(false)
             } catch (e) {
                 console.error(e)
                 setLoading(false)
@@ -65,15 +61,13 @@ export const TodoList: FC<any> = () => {
         }
     }
 
-    const handleDelete = (id: string) => {
+    const handleDelete = async (id: string) => {
         try {
             setLoading(true)
-            setTimeout(async () => {
-                const newTodos = todos.filter(todoItem => todoItem._id !== id)
-                await deleteTodos(id)
-                setLoading(false)
-                setTodos(newTodos)
-            }, 500)
+            const newTodos = todos.filter(todoItem => todoItem._id !== id)
+            await deleteTodos(id)
+            setTodos(newTodos)
+            setLoading(false)
         } catch (e) {
             console.error(e)
             setLoading(false)
@@ -91,35 +85,39 @@ export const TodoList: FC<any> = () => {
     }
 
     return (
-        <div className={styles.container}>
-            <h2 className={styles.header}>Tasks for today</h2>
-            <form onSubmit={handleSubmit}>
-                <div className={styles.inputWrapper}>
-                    <label>
-                        <input type={"text"} value={entry} onChange={handleEntryChange}
-                               placeholder={"Add new task..."}/>
-                    </label>
-                    <div className={styles.submitBtn}>{loading
-                        ? <Spinner size={20}/>
-                        : <button type={"submit"} disabled={!entry}>
-                            <AddIcon/>
-                        </button>
-                    }</div>
-                </div>
-            </form>
-            {todos.length
-                ?
-                <div>
-                    {todos.map(renderTodoItems)}
-                </div>
-                :
-                <div className={styles.emptyContainer}>
-                    {isFetching
-                        ? <Spinner size={50}/>
-                        : <img src={emptyListImg} alt={"empty list"}/>
-                    }
-                </div>
-            }
-        </div>
+        <>
+            <div className={styles.formWrapper}>
+                <h2 className={styles.header}>Tasks for today</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className={styles.inputWrapper}>
+                        <label>
+                            <input type={"text"} value={entry} onChange={handleEntryChange}
+                                   placeholder={"Add new task..."}/>
+                        </label>
+                        <div className={styles.submitBtn}>{loading
+                            ? <Spinner size={20}/>
+                            : <button type={"submit"} disabled={!entry}>
+                                <AddIcon/>
+                            </button>
+                        }</div>
+                        <button>Select all</button>
+                        <button>Delete all</button>
+                    </div>
+                </form>
+            </div>
+            <div className={styles.paperWrapper}>
+                {todos.length
+                    ?
+                    todos.map(renderTodoItems)
+                    :
+                    <div className={styles.emptyContainer}>
+                        {isFetching
+                            ? <Spinner size={50}/>
+                            : <img src={emptyListImg} alt={"empty list"}/>
+                        }
+                    </div>
+                }
+            </div>
+        </>
     )
 }
